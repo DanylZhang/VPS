@@ -31,8 +31,8 @@ INSTALLATION INSTRUCTIONS
 ------
 
     wget https://raw.github.com/DanylZhang/VPS/master/Ubuntu-pptp-setup.sh
-    sudo sh setup.sh
-    sudo bash setup.sh –u your_username –p your_password
+    sudo sh Ubuntu-pptp-setup.sh
+    sudo bash Ubuntu-pptp-setup.sh –u your_username –p your_password
     service pptpd restart
 
 Some notes
