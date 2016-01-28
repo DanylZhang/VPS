@@ -88,9 +88,7 @@ then
    NAME="vpn"
 fi
 
-cat >/etc/ppp/chap-secrets <<END
-# Secrets for authentication using CHAP
-# client server secret IP addresses
+cat >> /etc/ppp/chap-secrets <<END
 $NAME pptpd $PASS *
 END
 cat >/etc/pptpd.conf <<END
