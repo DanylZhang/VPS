@@ -1,44 +1,51 @@
 #!/bin/bash
+#    Setup Simple PPTP VPN server for CentOS
+#    Copyright (C) 2015-2016 Danyl Zhang <1475811550@qq.com> and contributors
 #
-# Installs a PPTP VPN-only system for CentOS
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+printhelp() {
+
+echo "
+Usage: ./CentOS-pptp-setup.sh [OPTION]
+If you are using custom password , Make sure its more than 8 characters. Otherwise it will generate random password for you. 
+If you trying set password only. It will generate Default user with Random password. 
+example: ./CentOS-pptp-setup.sh -u myusr -p mypass
+Use without parameter [ ./CentOS-pptp-setup.sh ] to use default username and Random password
+  -u,    --username             Enter the Username
+  -p,    --password             Enter the Password
+"
+}
+
+while [ "$1" != "" ]; do
+  case "$1" in
+    -u    | --username )             NAME=$2; shift 2 ;;
+    -p    | --password )             PASS=$2; shift 2 ;;
+    -h    | --help )            echo "$(printhelp)"; exit; shift; break ;;
+  esac
+done
 
 # Check if user is root
 [ $(id -u) != "0" ] && { echo -e "\033[31mError: You must be root to run this script\033[0m"; exit 1; } 
 
 export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 clear
-printf "
-#######################################################################
-#            Installs a PPTP VPN-only system for CentOS               #
-# For more information please visit https://github.com/DanylZhang/VPS #
-#######################################################################
-"
 
 [ ! -e '/usr/bin/curl' ] && yum -y install curl
 
 VPN_IP=`curl ipv4.icanhazip.com`
 
-VPN_USER="myvpn"
-VPN_PASS="mypass"
-
 VPN_LOCAL="192.168.0.150"
 VPN_REMOTE="192.168.0.151-200"
-
-while :
-do
-        echo
-        read -p "Please input username: " VPN_USER 
-        [ -n "$VPN_USER" ] && break
-done
-
-while :
-do
-        echo
-        read -p "Please input password: " VPN_PASS
-        [ -n "$VPN_PASS" ] && break
-done
 clear
-
 
 if [ -f /etc/redhat-release -a -n "`grep ' 7\.' /etc/redhat-release`" ];then
         #CentOS_REL=7
@@ -52,6 +59,7 @@ failovermethod=priority
 enabled=1
 gpgcheck=0
 EOF
+
 fi
         for Package in wget make openssl gcc-c++ ppp pptpd iptables iptables-services 
         do
@@ -72,7 +80,6 @@ else
         exit 1
 fi
 
-
 echo "1" > /proc/sys/net/ipv4/ip_forward
 
 sysctl -p /etc/sysctl.conf
@@ -86,7 +93,26 @@ if [ -z "`grep '^ms-dns' /etc/ppp/options.pptpd`" ];then
 	echo "ms-dns 208.67.222.222" >> /etc/ppp/options.pptpd # OpenDNS Primary
 fi
 
-echo "$VPN_USER pptpd $VPN_PASS *" >> /etc/ppp/chap-secrets
+#no liI10oO chars in password
+
+LEN=$(echo ${#PASS})
+
+if [ -z "$PASS" ] || [ $LEN -lt 8 ] || [ -z "$NAME"]
+then
+   P1=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
+   P2=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
+   P3=`cat /dev/urandom | tr -cd abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789 | head -c 3`
+   PASS="$P1-$P2-$P3"
+fi
+
+if [ -z "$NAME" ]
+then
+   NAME="vpn"
+fi
+
+cat >> /etc/ppp/chap-secrets <<END
+$NAME pptpd $PASS *
+END
 
 ETH=`route | grep default | awk '{print $NF}'`
 [ -z "`grep '1723 -j ACCEPT' /etc/sysconfig/iptables`" ] && iptables -I INPUT 4 -p tcp -m state --state NEW -m tcp --dport 1723 -j ACCEPT
@@ -104,5 +130,5 @@ clear
 
 echo -e "You can now connect to your VPN via your external IP \033[32m${VPN_IP}\033[0m"
 
-echo -e "Username: \033[32m${VPN_USER}\033[0m"
-echo -e "Password: \033[32m${VPN_PASS}\033[0m"
+echo -e "Username: \033[32m${NAME}\033[0m"
+echo -e "Password: \033[32m${PASS}\033[0m"
