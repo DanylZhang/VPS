@@ -128,11 +128,10 @@ then
   echo "  !!!  COULD NOT DETECT SERVER EXTERNAL IP ADDRESS  !!!"
 else
   echo "============================================================"
-  echo "Detected your server external ip address: $IP"
+  echo -e "You can now connect to your VPN via your external IP \033[32m${IP}\033[0m"
 fi
-echo   ""
-echo   "VPN username = $NAME   password = $PASS"
-echo   "============================================================"
+  echo -e "Username: \033[32m${NAME}\033[0m"
+  echo -e "Password: \033[32m${PASS}\033[0m"
 sleep 2
 
 service pptpd restart
