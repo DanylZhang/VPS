@@ -10,9 +10,9 @@ Setup Simple PPTP VPN server for CentOS and Ubuntu
 > Mac OS and Android and it's easily good enough for evading country
 > level IP blocks.
 
-CentOS-pptp-setup.sh has been tested on Vultr: **CentOS 6 x86**
+CentOS-pptp-setup.sh has been tested on **Vultr: CentOS 6 x86**
 
-Ubuntu-pptp-setup.sh has been tested on Vultr: **Ubuntu14.04 x86**
+Ubuntu-pptp-setup.sh has been tested on **Vultr: Ubuntu14.04 x86**
 
 INSTALLATION INSTRUCTIONS
 =========================
@@ -25,13 +25,15 @@ INSTALLATION INSTRUCTIONS
     chmod +x ./CentOS-pptp-setup.sh
     ./CentOS-pptp-setup.sh
 
-Or
+*or*
 
 **Ubuntu**
 ------
 
     wget https://raw.github.com/DanylZhang/VPS/master/Ubuntu-pptp-setup.sh
     sudo sh setup.sh
+    sudo bash setup.sh –u your_username –p your_password
+    service pptpd restart
 
 Some notes
 ==========
@@ -44,5 +46,7 @@ long time (days or more), consider either restricting access to the ssh port on
 the server by ip addresses to the networks you use, if you know the addresses
 you are most likely to use or at least change ssh from port 22 to a random
 port.
+
+*For Ubuntu-pptp-setup.sh:*
 
 You can also specify you own username and password, run `sh setup.sh -h` for help.
