@@ -23,7 +23,7 @@ INSTALLATION INSTRUCTIONS
 
     wget https://raw.github.com/DanylZhang/VPS/master/CentOS-pptp-setup.sh
     chmod +x ./CentOS-pptp-setup.sh
-    ./CentOS-pptp-setup.sh
+    ./CentOS-pptp-setup.sh –u your_username –p your_password
 
 *or*
 
@@ -38,7 +38,6 @@ INSTALLATION INSTRUCTIONS
 Some notes
 ==========
 
-Only one vpn account is generated.
 To add more accounts, see the file /etc/ppp/chap-secrets
 
 If you keep the vpn server generated with this script on the internet for a
@@ -47,6 +46,4 @@ the server by ip addresses to the networks you use, if you know the addresses
 you are most likely to use or at least change ssh from port 22 to a random
 port.
 
-*For Ubuntu-pptp-setup.sh:*
-
-You can also specify you own username and password, run `sh setup.sh -h` for help.
+You can also specify you own username and password, run `sh CentOS-pptp-setup.sh -h` for help.
