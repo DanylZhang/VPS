@@ -36,7 +36,7 @@ INSTALLATION INSTRUCTIONS
 
 Some notes
 ==========
-If your vpn password *less than 8* characters,then give you a random password.
+If your vpn password **less than 8** characters,then give you a random password.
 
 To add more accounts, see the file /etc/ppp/chap-secrets
 
@@ -46,4 +46,4 @@ the server by ip addresses to the networks you use, if you know the addresses
 you are most likely to use or at least change ssh from port 22 to a random
 port.
 
-You can also specify you own username and password, run `sh CentOS-pptp-setup.sh -h` for help.
+You can also specify you own username and password, run `./CentOS-pptp-setup.sh -h` for help.
