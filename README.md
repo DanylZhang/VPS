@@ -36,7 +36,7 @@ INSTALLATION INSTRUCTIONS
 
 Some notes
 ==========
-If your vpn password less than 8 character,then give you a random pass.
+If your vpn password *less than 8* characters,then give you a random password.
 
 To add more accounts, see the file /etc/ppp/chap-secrets
 
