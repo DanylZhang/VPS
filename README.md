@@ -10,9 +10,9 @@ Setup Simple PPTP VPN server for CentOS and Ubuntu
 > Mac OS and Android and it's easily good enough for evading country
 > level IP blocks.
 
-CentOS-pptp-setup.sh has been tested on **Vultr: CentOS 6 x86**
+CentOS-pptp-setup.sh has been tested on **Vultr & Host1plus: CentOS 6 x86**
 
-Ubuntu-pptp-setup.sh has been tested on **Vultr: Ubuntu14.04 x86**
+Ubuntu-pptp-setup.sh has been tested on **Vultr & Host1plus: Ubuntu14.04 x86**
 
 INSTALLATION INSTRUCTIONS
 =========================
@@ -36,6 +36,7 @@ INSTALLATION INSTRUCTIONS
 
 Some notes
 ==========
+If your vpn password less than 8 character,then give you a random pass.
 
 To add more accounts, see the file /etc/ppp/chap-secrets
 
