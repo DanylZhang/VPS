@@ -46,4 +46,5 @@ the server by ip addresses to the networks you use, if you know the addresses
 you are most likely to use or at least change ssh from port 22 to a random
 port.
 
-You can also specify you own username and password, run `./CentOS-pptp-setup.sh -h` for help.
+You can also specify you own username and password, run `./CentOS-pptp-setup.sh -h`
+*or* `sudo bash Ubuntu-pptp-setup.sh -h` for help.
