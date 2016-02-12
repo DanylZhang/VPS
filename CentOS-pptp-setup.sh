@@ -123,7 +123,7 @@ service iptables save
 sed -i 's@^-A INPUT -j REJECT --reject-with icmp-host-prohibited@#-A INPUT -j REJECT --reject-with icmp-host-prohibited@' /etc/sysconfig/iptables 
 sed -i 's@^-A FORWARD -j REJECT --reject-with icmp-host-prohibited@#-A FORWARD -j REJECT --reject-with icmp-host-prohibited@' /etc/sysconfig/iptables 
 service iptables restart
-
+chkconfig iptables on
 service pptpd restart
 chkconfig pptpd on
 clear
