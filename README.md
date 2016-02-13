@@ -14,7 +14,7 @@ CentOS-pptp-setup.sh has been tested on **Vultr & Host1plus: CentOS 6 x86**
 
 Ubuntu-pptp-setup.sh has been tested on **Vultr & Host1plus: Ubuntu14.04 x86**
 
-CentOS7-pptp-host1plus.sh just for **CentOS 7** on **Host1plus & OpenVZ**
+CentOS7-pptp-host1plus.sh is just for **CentOS 7** on **Host1plus & OpenVZ**
 
 INSTALLATION INSTRUCTIONS
 =========================
