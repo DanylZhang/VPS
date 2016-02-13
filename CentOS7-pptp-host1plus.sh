@@ -47,11 +47,11 @@ VPN_LOCAL="192.168.0.150"
 VPN_REMOTE="192.168.0.151-200"
 clear
 
-yum -y install epel-release firewalld
+yum -y install epel-release firewalld net-tools
 yum -y install ppp pptpd
 
-echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-sysctl -p
+echo "1" > /proc/sys/net/ipv4/ip_forward
+sysctl -p /etc/sysctl.conf
 
 [ -z "`grep '^localip' /etc/pptpd.conf`" ] && echo "localip $VPN_LOCAL" >> /etc/pptpd.conf # Local IP address of your VPN server
 [ -z "`grep '^remoteip' /etc/pptpd.conf`" ] && echo "remoteip $VPN_REMOTE" >> /etc/pptpd.conf # Scope for your home network
@@ -91,8 +91,6 @@ firewall-cmd --add-masquerade --permanent
 firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -i $ETH -p gre -j ACCEPT
 firewall-cmd --reload
 
-echo 'systemctl start pptpd' >> /etc/rc.d/rc.local
-chmod +x /etc/rc.d/rc.local
 systemctl start pptpd
 chkconfig pptpd on
 clear
