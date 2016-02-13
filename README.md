@@ -14,18 +14,17 @@ CentOS-pptp-setup.sh has been tested on **Vultr & Host1plus: CentOS 6 x86**
 
 Ubuntu-pptp-setup.sh has been tested on **Vultr & Host1plus: Ubuntu14.04 x86**
 
+CentOS7-pptp-host1plus.sh just for **CentOS 7** on **Host1plus & OpenVZ**
+
 INSTALLATION INSTRUCTIONS
 =========================
 
 **CentOS**
-
 ------
 
     wget https://raw.github.com/DanylZhang/VPS/master/CentOS-pptp-setup.sh
     chmod +x ./CentOS-pptp-setup.sh
     ./CentOS-pptp-setup.sh –u your_username –p your_password
-
-*or*
 
 **Ubuntu**
 ------
@@ -33,6 +32,15 @@ INSTALLATION INSTRUCTIONS
     wget https://raw.github.com/DanylZhang/VPS/master/Ubuntu-pptp-setup.sh
     sudo bash Ubuntu-pptp-setup.sh –u your_username –p your_password
     service pptpd restart
+
+*or*
+
+**CentOS 7**
+------
+
+    wget https://raw.github.com/DanylZhang/VPS/master/CentOS7-pptp-host1plus.sh
+    chmod +x ./CentOS7-pptp-host1plus.sh
+    ./CentOS7-pptp-host1plus.sh –u your_username –p your_password
 
 Some notes
 ==========
