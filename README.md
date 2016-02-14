@@ -22,14 +22,14 @@ INSTALLATION INSTRUCTIONS
 **CentOS**
 ------
 
-    wget https://raw.github.com/DanylZhang/VPS/master/CentOS-pptp-setup.sh
+    wget https://raw.githubusercontent.com/DanylZhang/VPS/master/CentOS-pptp-setup.sh
     chmod +x ./CentOS-pptp-setup.sh
     ./CentOS-pptp-setup.sh -u your_username -p your_password
 
 **Ubuntu**
 ------
 
-    wget https://raw.github.com/DanylZhang/VPS/master/Ubuntu-pptp-setup.sh
+    wget https://raw.githubusercontent.com/DanylZhang/VPS/master/Ubuntu-pptp-setup.sh
     sudo bash Ubuntu-pptp-setup.sh -u your_username -p your_password
     service pptpd restart
 
@@ -38,7 +38,7 @@ INSTALLATION INSTRUCTIONS
 **CentOS 7**
 ------
 
-    wget https://raw.github.com/DanylZhang/VPS/master/CentOS7-pptp-host1plus.sh
+    wget https://raw.githubusercontent.com/DanylZhang/VPS/master/CentOS7-pptp-host1plus.sh
     chmod +x ./CentOS7-pptp-host1plus.sh
     ./CentOS7-pptp-host1plus.sh -u your_username -p your_password
 
