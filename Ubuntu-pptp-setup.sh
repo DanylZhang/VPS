@@ -47,11 +47,13 @@ then
 fi
 
 apt-get update
-
+apt-get -y install net-tools
 apt-get -y install pptpd || {
   echo "Could not install pptpd" 
   exit 1
 }
+
+ETH=`route | grep default | awk '{print $NF}'`
 
 #ubuntu has exit 0 at the end of the file.
 sed -i '/^exit 0/d' /etc/rc.local
@@ -63,7 +65,7 @@ iptables -I INPUT -p tcp --dport 1723 -j ACCEPT
 #gre tunnel protocol
 iptables -I INPUT  --protocol 47 -j ACCEPT
 
-iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o $ETH -j MASQUERADE
 
 #supposedly makes the vpn work better
 iptables -I FORWARD -s 192.168.2.0/24 -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j TCPMSS --set-mss 1356
@@ -91,12 +93,14 @@ fi
 cat >> /etc/ppp/chap-secrets <<END
 $NAME pptpd $PASS *
 END
+
 cat >/etc/pptpd.conf <<END
 option /etc/ppp/options.pptpd
-logwtmp
+#logwtmp
 localip 192.168.2.1
 remoteip 192.168.2.10-100
 END
+
 cat >/etc/ppp/options.pptpd <<END
 name pptpd
 refuse-pap
@@ -105,10 +109,10 @@ refuse-mschap
 require-mschap-v2
 require-mppe-128
 ms-dns 8.8.8.8
-ms-dns 8.8.4.4
+ms-dns 223.5.5.5
 proxyarp
 lock
-nobsdcomp 
+nobsdcomp
 novj
 novjccomp
 nologfd
