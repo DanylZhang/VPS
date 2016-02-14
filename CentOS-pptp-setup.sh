@@ -87,6 +87,8 @@ sysctl -p
 
 if [ -z "`grep '^ms-dns' /etc/ppp/options.pptpd`" ];then
 	echo "ms-dns 8.8.8.8" >> /etc/ppp/options.pptpd
+	echo "ms-dns 209.244.0.3" >> /etc/ppp/options.pptpd
+	echo "ms-dns 208.67.222.222" >> /etc/ppp/options.pptpd
 	echo "ms-dns 223.5.5.5" >> /etc/ppp/options.pptpd
 fi
 
