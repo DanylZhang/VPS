@@ -93,7 +93,7 @@ END
 
 ETH=`route | grep default | awk '{print $NF}'`
 
-systemctl start firewalld.service
+systemctl restart firewalld.service
 systemctl enable firewalld.service
 firewall-cmd --set-default-zone=public
 firewall-cmd --add-interface=$ETH
@@ -103,7 +103,7 @@ firewall-cmd --add-masquerade --permanent
 firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -i $ETH -p gre -j ACCEPT
 firewall-cmd --reload
 
-systemctl start pptpd.service
+systemctl restart pptpd.service
 systemctl enable pptpd.service
 
 VPN_IP=`curl ipv4.icanhazip.com`
