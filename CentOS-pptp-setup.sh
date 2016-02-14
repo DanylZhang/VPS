@@ -42,9 +42,8 @@ clear
 [ ! -e '/usr/bin/curl' ] && yum -y install curl
 
 VPN_IP=`curl ipv4.icanhazip.com`
-
-VPN_LOCAL="192.168.0.150"
-VPN_REMOTE="192.168.0.151-200"
+VPN_LOCAL="192.168.2.1"
+VPN_REMOTE="192.168.2.10-100"
 clear
 
 if [ -f /etc/redhat-release -a -n "`grep ' 7\.' /etc/redhat-release`" ];then
@@ -58,6 +57,7 @@ mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=\$basearc
 failovermethod=priority
 enabled=1
 gpgcheck=0
+
 EOF
 
 fi
@@ -80,17 +80,14 @@ else
         exit 1
 fi
 
-echo "1" > /proc/sys/net/ipv4/ip_forward
-
-sysctl -p /etc/sysctl.conf
+sysctl -p
 
 [ -z "`grep '^localip' /etc/pptpd.conf`" ] && echo "localip $VPN_LOCAL" >> /etc/pptpd.conf # Local IP address of your VPN server
 [ -z "`grep '^remoteip' /etc/pptpd.conf`" ] && echo "remoteip $VPN_REMOTE" >> /etc/pptpd.conf # Scope for your home network
 
 if [ -z "`grep '^ms-dns' /etc/ppp/options.pptpd`" ];then
-	echo "ms-dns 8.8.8.8" >> /etc/ppp/options.pptpd # Google DNS Primary
-	echo "ms-dns 209.244.0.3" >> /etc/ppp/options.pptpd # Level3 Primary
-	echo "ms-dns 208.67.222.222" >> /etc/ppp/options.pptpd # OpenDNS Primary
+	echo "ms-dns 8.8.8.8" >> /etc/ppp/options.pptpd
+	echo "ms-dns 223.5.5.5" >> /etc/ppp/options.pptpd
 fi
 
 #no liI10oO chars in password
