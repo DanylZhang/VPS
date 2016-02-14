@@ -40,16 +40,12 @@ export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 clear
 
 yum -y update
+yum -y epel-release
+yum -y install firewalld net-tools curl ppp pptpd
 
-[ ! -e '/usr/bin/curl' ] && yum -y install curl
-VPN_IP=`curl ipv4.icanhazip.com`
-clear
-
-yum -y install epel-release firewalld net-tools
-yum -y install ppp pptpd
-
-echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf # 使内核支持转发
-sysctl -p # 使内核修改生效
+echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+echo 'net.ipv4.tcp_syncookies = 1' >> /etc/sysctl.conf
+sysctl -p
 
 #no liI10oO chars in password
 
@@ -71,12 +67,14 @@ fi
 cat >> /etc/ppp/chap-secrets <<END
 $NAME pptpd $PASS *
 END
+
 cat >/etc/pptpd.conf <<END
 option /etc/ppp/options.pptpd
 #logwtmp
 localip 192.168.2.1
 remoteip 192.168.2.10-100
 END
+
 cat >/etc/ppp/options.pptpd <<END
 name pptpd
 refuse-pap
@@ -84,9 +82,9 @@ refuse-chap
 refuse-mschap
 require-mschap-v2
 require-mppe-128
-ms-dns 8.8.8.8 # Google DNS Primary
-ms-dns 209.244.0.3 # Level3 Primary
-ms-dns 208.67.222.222 # OpenDNS Primary
+ms-dns 8.8.8.8
+ms-dns 209.244.0.3
+ms-dns 223.5.5.5
 proxyarp
 lock
 nobsdcomp 
@@ -96,19 +94,22 @@ nologfd
 END
 
 ETH=`route | grep default | awk '{print $NF}'`
-systemctl start firewalld # 开启防火墙
-systemctl enable firewalld # 设置开机启动
+
+systemctl start firewalld.service
+systemctl enable firewalld.service
+firewall-cmd --set-default-zone=public
+firewall-cmd --add-interface=$ETH
 firewall-cmd --add-port=22/tcp --permanent
 firewall-cmd --add-port=1723/tcp --permanent
 firewall-cmd --add-masquerade --permanent
 firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -i $ETH -p gre -j ACCEPT
 firewall-cmd --reload
 
-systemctl start pptpd
-systemctl enable pptpd
+systemctl start pptpd.service
+systemctl enable pptpd.service
+
+VPN_IP=`curl ipv4.icanhazip.com`
 clear
-
 echo -e "You can now connect to your VPN via your external IP \033[32m${VPN_IP}\033[0m"
-
 echo -e "Username: \033[32m${NAME}\033[0m"
 echo -e "Password: \033[32m${PASS}\033[0m"
