@@ -82,6 +82,8 @@ refuse-mschap
 require-mschap-v2
 require-mppe-128
 ms-dns 8.8.8.8
+ms-dns 209.244.0.3
+ms-dns 208.67.222.222
 ms-dns 223.5.5.5
 proxyarp
 lock
@@ -103,6 +105,10 @@ firewall-cmd --add-masquerade --permanent
 firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -i $ETH -p gre -j ACCEPT
 firewall-cmd --reload
 
+cat > /etc/ppp/ip-up.local << END
+/sbin/ifconfig $1 mtu 1400
+END
+chmod +x /etc/ppp/ip-up.local
 systemctl restart pptpd.service
 systemctl enable pptpd.service
 
