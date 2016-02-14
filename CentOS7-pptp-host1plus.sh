@@ -40,7 +40,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 clear
 
 yum -y update
-yum -y epel-release
+yum -y install epel-release
 yum -y install firewalld net-tools curl ppp pptpd
 
 echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
