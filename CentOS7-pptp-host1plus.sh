@@ -44,7 +44,6 @@ yum -y epel-release
 yum -y install firewalld net-tools curl ppp pptpd
 
 echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-echo 'net.ipv4.tcp_syncookies = 1' >> /etc/sysctl.conf
 sysctl -p
 
 #no liI10oO chars in password
@@ -83,11 +82,10 @@ refuse-mschap
 require-mschap-v2
 require-mppe-128
 ms-dns 8.8.8.8
-ms-dns 209.244.0.3
 ms-dns 223.5.5.5
 proxyarp
 lock
-nobsdcomp 
+nobsdcomp
 novj
 novjccomp
 nologfd
