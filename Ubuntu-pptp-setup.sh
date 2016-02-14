@@ -54,7 +54,7 @@ apt-get -y install pptpd || {
 }
 
 echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-sed -i 's/net.ipv4.tcp_syncookies.*/#net.ipv4.tcp_syncookies = 1/' /etc/sysctl.conf
+sed -i 's@net.ipv4.tcp_syncookies.*@#net.ipv4.tcp_syncookies = 1@g' /etc/sysctl.conf
 sysctl -p
 
 ETH=`route | grep default | awk '{print $NF}'`
