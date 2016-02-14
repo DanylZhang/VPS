@@ -49,29 +49,21 @@ fi
 apt-get update
 apt-get -y install net-tools
 apt-get -y install pptpd || {
-  echo "Could not install pptpd" 
+  echo "Could not install pptpd"
   exit 1
 }
 
+echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+sed -i 's/net.ipv4.tcp_syncookies.*/#net.ipv4.tcp_syncookies = 1/' /etc/sysctl.conf
+sysctl -p
+
 ETH=`route | grep default | awk '{print $NF}'`
-
-#ubuntu has exit 0 at the end of the file.
-sed -i '/^exit 0/d' /etc/rc.local
-
-cat >> /etc/rc.local << END
-echo 1 > /proc/sys/net/ipv4/ip_forward
-#control channel
 iptables -I INPUT -p tcp --dport 1723 -j ACCEPT
-#gre tunnel protocol
 iptables -I INPUT  --protocol 47 -j ACCEPT
-
 iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o $ETH -j MASQUERADE
-
-#supposedly makes the vpn work better
 iptables -I FORWARD -s 192.168.2.0/24 -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j TCPMSS --set-mss 1356
-
-END
-sh /etc/rc.local
+service iptables save
+service iptables restart
 
 #no liI10oO chars in password
 
